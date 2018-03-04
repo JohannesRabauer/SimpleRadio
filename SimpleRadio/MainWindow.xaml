@@ -44,6 +44,15 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </TabItem>
+            <TabItem Header="Recorder" >
+                <ListView HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding favoriteStations}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <local:StationView />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

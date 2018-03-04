@@ -16,10 +16,25 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" Width="50" Height="50" Stretch="Uniform" Source="{Binding image.thumb.url}"/>
         <Label Grid.Column="1" VerticalContentAlignment="Center" Content="{Binding name, FallbackValue=Station}" />
-        <ToggleButton Grid.Column="2" Command="{Binding commandPlayToggle}" Margin="5" Padding="10" Width="40"  >
+        <ToggleButton Grid.Column="2" Command="{Binding commandRecordToggle}" Margin="5" Padding="10" Width="40" Foreground="Red" >
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=isRecording}" Value="True">
+                            <Setter Property="Content" Value="■" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=isRecording}" Value="False">
+                            <Setter Property="Content" Value="⬤" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <ToggleButton Grid.Column="3" Command="{Binding commandPlayToggle}" Margin="5" Padding="10" Width="40"  >
             <ToggleButton.Style>
                 <Style TargetType="ToggleButton">
                     <Style.Triggers>

@@ -35,5 +35,10 @@ namespace SimpleRadio.Model.Player
         {
             this._player.controls.stop();
         }
+
+        public void record(string urlAsString, String filename)
+        {
+
+        }
     }
 }

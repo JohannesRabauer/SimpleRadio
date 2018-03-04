@@ -1,11 +1,9 @@
-﻿using SimpleRadio.Helper;
+﻿using Newtonsoft.Json;
+using SimpleRadio.Helper;
 using SimpleRadio.Model.Player;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SimpleRadio.Model
@@ -56,7 +54,7 @@ namespace SimpleRadio.Model
         private DateTime _created_at;
 
         public DateTime created_at
-                    {
+        {
             get { return _created_at; }
             set { _created_at = value; }
         }
@@ -120,25 +118,44 @@ namespace SimpleRadio.Model
         }
 
         private bool _isPlaying;
+        [JsonIgnore]
         public bool isPlaying
         {
             get { return _isPlaying; }
-            set { _isPlaying = value;
+            set
+            {
+                _isPlaying = value;
                 OnPropertyChanged("isPlaying");
             }
         }
-        
+
+        private bool _isRecording;
+        [JsonIgnore]
+        public bool isRecording
+        {
+            get { return _isRecording; }
+            set
+            {
+                _isRecording = value;
+                OnPropertyChanged("isRecording");
+            }
+        }
+
         public ICommand commandPlayToggle { get; set; }
+        public ICommand commandRecordToggle { get; set; }
         public ICommand commandAddFavoriteStation { get; set; }
 
         private IMediaPlayer _player;
+        private IMediaPlayer _recorder;
         private MainContext _parent;
 
         public Station()
         {
             this.commandPlayToggle = new RelayCommand(param => playToggle());
+            this.commandRecordToggle = new RelayCommand(param => recordToggle());
             this.commandAddFavoriteStation = new RelayCommand(param => addFavoriteStation());
             this.isPlaying = false;
+            this.isRecording = false;
         }
 
         public void init(MainContext parent)
@@ -153,14 +170,14 @@ namespace SimpleRadio.Model
 
         private void playToggle()
         {
-            if(this._isPlaying)
+            if (this._isPlaying)
             {
                 this._player.stop();
                 this.isPlaying = false;
             }
             else
             {
-                if(this._player == null)
+                if (this._player == null)
                 {
                     this._player = new VlcPlayer();
                 }
@@ -170,12 +187,54 @@ namespace SimpleRadio.Model
 
         }
 
+        private void recordToggle()
+        {
+            if (this._isRecording)
+            {
+                stopRecording();
+            }
+            else
+            {
+                startRecording();
+            }
+        }
+
+        private void startRecording()
+        {
+            if (this._recorder == null)
+            {
+                this._recorder = new VlcPlayer();
+            }
+            this._recorder.record(this._streams.First().stream.AbsoluteUri, getFilenameForRecord());
+            this.isRecording = true;
+        }
+
+        private String getFilenameForRecord()
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            string stationFilename = System.Text.RegularExpressions.Regex.Replace(this._name, invalidRegStr, "_");
+            return stationFilename + "_" + System.DateTime.Now.ToString("yyyy_MM_ddTHH_mm_ss") + ".mp4";
+        }
+
+        private void stopRecording()
+        {
+            this._recorder.stop();
+            this.isRecording = false;
+        }
+
         public void Dispose()
         {
-            if(this._player != null)
+            if (this._player != null)
             {
                 this._player.Dispose();
                 this._player = null;
+            }
+            if (this._recorder != null)
+            {
+                this._recorder.Dispose();
+                this._recorder = null;
             }
         }
     }

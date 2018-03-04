@@ -14,11 +14,13 @@ namespace SimpleRadio.Model.Player
         public VlcPlayer()
         {
             this._player = new Vlc.DotNet.Core.VlcMediaPlayer(new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "lib_vlc")));
+            this._player.Log += _player_Log;
         }
         public void Dispose()
         {
-            if(this._player != null)
+            if (this._player != null)
             {
+                this._player.Stop();
                 this._player.Dispose();
                 this._player = null;
             }
@@ -32,6 +34,20 @@ namespace SimpleRadio.Model.Player
         public void stop()
         {
             this._player.Stop();
+        }
+
+        public void record(string urlAsString, String filename)
+        {
+                this._player.SetMedia(new Uri(urlAsString), ":sout=#std{access=file,mux=mp4, dst='" + filename + "'}"); //transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}:
+                this._player.Play();
+        }
+
+        private void _player_Log(object sender, Vlc.DotNet.Core.VlcMediaPlayerLogEventArgs e)
+        {
+            if (e.Level == Vlc.DotNet.Core.Interops.Signatures.VlcLogLevel.Error)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
         }
     }
 }
