@@ -4,9 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SimpleRadio"
+             xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="50" d:DesignWidth="500">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Start time:" Grid.Column="0" />
+            <wpfTool:DateTimePicker Grid.Column="1" Value="{Binding Path=startTime, Mode=TwoWay, FallbackValue=2018-01-01 12:00}" Format="SortableDateTime" />
+            <Label Content="End time:" Grid.Column="2" />
+            <wpfTool:DateTimePicker Grid.Column="3" Value="{Binding Path=endTime, Mode=TwoWay, FallbackValue=2018-01-01 12:00}" Format="SortableDateTime"/>
+        </Grid>
+        <ComboBox Grid.Row="1" />
     </Grid>
 </UserControl>

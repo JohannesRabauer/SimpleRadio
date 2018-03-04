@@ -99,6 +99,7 @@
     <Compile Include="Model\Player\IMediaPlayer.cs" />
     <Compile Include="Model\Player\WMPlayer.cs" />
     <Compile Include="Model\Player\VlcPlayer.cs" />
+    <Compile Include="Model\Recorder.cs" />
     <Compile Include="RecorderView.xaml.cs">
       <DependentUpon>RecorderView.xaml</DependentUpon>
     </Compile>

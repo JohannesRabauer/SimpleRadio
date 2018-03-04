@@ -7,33 +7,33 @@
         mc:Ignorable="d"
         Title="Simple radio" Height="350" Width="525">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="1" Text="{Binding searchString, UpdateSourceTrigger=PropertyChanged}">
-                <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding commandSearchStations}" Key="Return" />
-                </TextBox.InputBindings>
-            </TextBox>
-            <Button Grid.Column="2" Command="{Binding commandSearchStations}" Content="Search" />
-        </Grid>
         <!--<Button Grid.Row="1" Content="Button" Command="{Binding commandGetAllStations}"/>-->
         <TabControl Grid.Row="2">
-            <TabItem Header="Results">
-                <ListView HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding stationsToView}" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <local:StationView />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <TabItem Header="Search">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Column="1" Text="{Binding searchString, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding commandSearchStations}" Key="Return" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Grid.Column="2" Command="{Binding commandSearchStations}" Content="Search" Padding="10 3 10 3" />
+                    <ListView Grid.Row="1" Grid.ColumnSpan="3" HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding stationsToView}" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:StationView />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Favorites" >
                 <ListView HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding favoriteStations}" >
@@ -45,13 +45,28 @@
                 </ListView>
             </TabItem>
             <TabItem Header="Recorder" >
-                <ListView HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding favoriteStations}" >
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                <ListView Grid.Row="0" HorizontalContentAlignment="Stretch"  Grid.IsSharedSizeScope="True" Margin="3" ItemsSource="{Binding recorderList}" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <local:StationView />
+                            <local:RecorderView />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                        <Button Grid.Row="1" Command="{Binding commandAddRecorder}" >
+                            <Viewbox Height="24">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" Fill="Green" />
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>
