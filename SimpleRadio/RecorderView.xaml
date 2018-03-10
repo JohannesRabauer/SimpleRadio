@@ -8,11 +8,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="500">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <CheckBox Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" IsChecked="{Binding IsActivated}" Margin="5" > </CheckBox>
+        <Grid Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -24,6 +29,9 @@
             <Label Content="End time:" Grid.Column="2" />
             <wpfTool:DateTimePicker Grid.Column="3" Value="{Binding Path=endTime, Mode=TwoWay, FallbackValue=2018-01-01 12:00}" Format="SortableDateTime"/>
         </Grid>
-        <ComboBox Grid.Row="1" />
+        <ComboBox Grid.Column="1" Grid.Row="1" 
+                   ItemsSource="{Binding Path=favoriteStations}" 
+            DisplayMemberPath="name" 
+            SelectedValue="{Binding Path=selectedStation}"/>
     </Grid>
 </UserControl>

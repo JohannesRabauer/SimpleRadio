@@ -199,7 +199,7 @@ namespace SimpleRadio.Model
             }
         }
 
-        private void startRecording()
+        public void startRecording()
         {
             if (this._recorder == null)
             {
@@ -218,10 +218,13 @@ namespace SimpleRadio.Model
             return stationFilename + "_" + System.DateTime.Now.ToString("yyyy_MM_ddTHH_mm_ss") + ".mp4";
         }
 
-        private void stopRecording()
+        public void stopRecording()
         {
-            this._recorder.stop();
-            this.isRecording = false;
+            if (this._recorder != null)
+            {
+                this._recorder.stop();
+                this.isRecording = false;
+            }
         }
 
         public void Dispose()

@@ -71,7 +71,7 @@ namespace SimpleRadio.Model
             this.commandSearchStations = new RelayCommand(param => searchStations());
             this.commandAddRecorder = new RelayCommand(param => addRecorder());
             this.favoriteStations = new ObservableCollection<Station>(loadFavoriteStations());
-            this.recorderList = new ObservableCollection<Recorder>{ new Recorder() };
+            this.recorderList = new ObservableCollection<Recorder>{ new Recorder(this.favoriteStations) };
         }
 
         public void addFavoriteStation(Station stationToAdd)
@@ -81,7 +81,7 @@ namespace SimpleRadio.Model
 
         private void addRecorder()
         {
-            this.recorderList.Add(new Recorder());
+            this.recorderList.Add(new Recorder(this.favoriteStations));
         }
 
         private void removeRecorder(Recorder recorderToRemove)
@@ -110,7 +110,7 @@ namespace SimpleRadio.Model
                 Properties.Settings.Default.FavoriteStations = JsonConvert.SerializeObject(stations);
                 Properties.Settings.Default.Save();
             }
-            catch (Exception e)
+            catch (Exception )
             {
             }
 
