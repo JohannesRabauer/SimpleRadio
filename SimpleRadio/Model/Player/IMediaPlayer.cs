@@ -11,5 +11,6 @@ namespace SimpleRadio.Model.Player
         void playUrl(String urlAsString);
         void stop();
         void record(string urlAsString, String filename);
+        void setVolume(int volume);
     }
 }

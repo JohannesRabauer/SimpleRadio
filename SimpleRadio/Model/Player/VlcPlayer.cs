@@ -11,10 +11,11 @@ namespace SimpleRadio.Model.Player
     {
         private Vlc.DotNet.Core.VlcMediaPlayer _player;
 
-        public VlcPlayer()
+        public VlcPlayer(int volume)
         {
             this._player = new Vlc.DotNet.Core.VlcMediaPlayer(new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "lib_vlc")));
             this._player.Log += _player_Log;
+            setVolume(volume);
         }
         public void Dispose()
         {
@@ -40,6 +41,11 @@ namespace SimpleRadio.Model.Player
         {
                 this._player.SetMedia(new Uri(urlAsString), ":sout=#std{access=file,mux=mp4, dst='" + filename + "'}"); //transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}:
                 this._player.Play();
+        }
+
+        public void setVolume(int volume)
+        {
+            this._player.Audio.Volume = volume;
         }
 
         private void _player_Log(object sender, Vlc.DotNet.Core.VlcMediaPlayerLogEventArgs e)

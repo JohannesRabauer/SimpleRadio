@@ -141,6 +141,7 @@ namespace SimpleRadio.Model
             }
         }
 
+
         public ICommand commandPlayToggle { get; set; }
         public ICommand commandRecordToggle { get; set; }
         public ICommand commandAddFavoriteStation { get; set; }
@@ -148,6 +149,7 @@ namespace SimpleRadio.Model
         private IMediaPlayer _player;
         private IMediaPlayer _recorder;
         private MainContext _parent;
+        private int _volume;
 
         public Station()
         {
@@ -156,11 +158,22 @@ namespace SimpleRadio.Model
             this.commandAddFavoriteStation = new RelayCommand(param => addFavoriteStation());
             this.isPlaying = false;
             this.isRecording = false;
+            this._volume = 50;
         }
 
         public void init(MainContext parent)
         {
             this._parent = parent;
+            setVolume(parent.volume);
+        }
+
+        public void setVolume(int volume)
+        {
+            this._volume = volume;
+            if(this._player != null)
+            {
+                this._player.setVolume(volume);
+            }
         }
 
         private void addFavoriteStation()
@@ -179,7 +192,7 @@ namespace SimpleRadio.Model
             {
                 if (this._player == null)
                 {
-                    this._player = new VlcPlayer();
+                    this._player = new VlcPlayer(this._volume);
                 }
                 this._player.playUrl(this._streams.First().stream.AbsoluteUri);
                 this.isPlaying = true;
@@ -203,7 +216,7 @@ namespace SimpleRadio.Model
         {
             if (this._recorder == null)
             {
-                this._recorder = new VlcPlayer();
+                this._recorder = new VlcPlayer(this._volume);
             }
             this._recorder.record(this._streams.First().stream.AbsoluteUri, getFilenameForRecord());
             this.isRecording = true;

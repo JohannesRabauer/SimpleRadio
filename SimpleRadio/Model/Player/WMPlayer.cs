@@ -11,9 +11,10 @@ namespace SimpleRadio.Model.Player
     {
         private WMPLib.WindowsMediaPlayer _player;
 
-        public WMPlayer()
+        public WMPlayer(int volume)
         {
             this._player = new WMPLib.WindowsMediaPlayer();
+            setVolume(volume);
         }
         public void Dispose()
         {
@@ -39,6 +40,10 @@ namespace SimpleRadio.Model.Player
         public void record(string urlAsString, String filename)
         {
 
+        }
+        public void setVolume(int volume)
+        {
+            this._player.settings.volume = volume;
         }
     }
 }

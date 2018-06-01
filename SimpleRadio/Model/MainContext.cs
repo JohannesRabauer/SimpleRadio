@@ -56,6 +56,21 @@ namespace SimpleRadio.Model
                 OnPropertyChanged("recorderList");
             }
         }
+        private int _volume;
+
+        public int volume
+        {
+            get { return _volume; }
+            set
+            {
+                _volume = value;
+                foreach (Station station in _favoriteStations)
+                {
+                    station.setVolume(value);
+                }
+                OnPropertyChanged("volume");
+            }
+        }
 
 
 
@@ -72,6 +87,7 @@ namespace SimpleRadio.Model
             this.commandAddRecorder = new RelayCommand(param => addRecorder());
             this.favoriteStations = new ObservableCollection<Station>(loadFavoriteStations());
             this.recorderList = new ObservableCollection<Recorder>{ new Recorder(this.favoriteStations) };
+            this.volume = 50;
         }
 
         public void addFavoriteStation(Station stationToAdd)
