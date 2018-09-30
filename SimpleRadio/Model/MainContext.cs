@@ -93,6 +93,12 @@ namespace SimpleRadio.Model
         public void addFavoriteStation(Station stationToAdd)
         {
             this.favoriteStations.Add(stationToAdd);
+            stationToAdd.isFavorite = true;
+        }
+
+        public void removeFavoriteStation(Station stationToRemove)
+        {
+            this.favoriteStations.Remove(stationToRemove);
         }
 
         private void addRecorder()
@@ -110,7 +116,7 @@ namespace SimpleRadio.Model
             try
             {
                 List<Station> loadedStations = JsonConvert.DeserializeObject<List<Station>>(Properties.Settings.Default.FavoriteStations);
-                loadedStations.ForEach(s => s.init(this));
+                loadedStations.ForEach(s => { s.init(this);s.isFavorite = true; });
                 return loadedStations;
             }
             catch (Exception)

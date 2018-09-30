@@ -141,10 +141,23 @@ namespace SimpleRadio.Model
             }
         }
 
+        private bool _isFavorite;
+        [JsonIgnore]
+        public bool isFavorite
+        {
+            get { return _isFavorite; }
+            set
+            {
+                _isFavorite = value;
+                OnPropertyChanged("isFavorite");
+            }
+        }
+
 
         public ICommand commandPlayToggle { get; set; }
         public ICommand commandRecordToggle { get; set; }
         public ICommand commandAddFavoriteStation { get; set; }
+        public ICommand commandRemoveFavoriteStation { get; set; }
 
         private IMediaPlayer _player;
         private IMediaPlayer _recorder;
@@ -156,6 +169,7 @@ namespace SimpleRadio.Model
             this.commandPlayToggle = new RelayCommand(param => playToggle());
             this.commandRecordToggle = new RelayCommand(param => recordToggle());
             this.commandAddFavoriteStation = new RelayCommand(param => addFavoriteStation());
+            this.commandRemoveFavoriteStation = new RelayCommand(param => removeFavoriteStation());
             this.isPlaying = false;
             this.isRecording = false;
             this._volume = 50;
@@ -179,6 +193,12 @@ namespace SimpleRadio.Model
         private void addFavoriteStation()
         {
             this._parent.addFavoriteStation(this);
+        }
+
+        private void removeFavoriteStation()
+        {
+            this._parent.removeFavoriteStation(this);
+            this.isFavorite = false;
         }
 
         private void playToggle()

@@ -4,11 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SimpleRadio"
+             xmlns:localHelper="clr-namespace:SimpleRadio.Helper"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
+    <UserControl.Resources>
+        <localHelper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <localHelper:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter" />
+    </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Command="{Binding commandAddFavoriteStation}" Header="Add to favorite stations" />
+            <MenuItem Command="{Binding commandAddFavoriteStation}" Header="Add to favorite stations" Visibility="{Binding isFavorite, Converter={StaticResource BooleanToInvertedVisibilityConverter}}" />
+            <MenuItem Command="{Binding commandRemoveFavoriteStation}" Header="Remove from favorite stations" Visibility="{Binding isFavorite, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid ToolTip="{Binding id}">
